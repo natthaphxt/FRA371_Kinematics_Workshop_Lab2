@@ -52,10 +52,59 @@ T = [   0.0000   -1.0000    0.0000    0.0500 ]
     [   0.0000    0.0000    0.0000    1.0000 ]
 ```
 
+## Robot Setup
+
+Add your own robot from LAB1 to this project and confirm it is ready for Lab 2.
+
+### 1. Move your robot into `my_robot/`
+
+Your robot comes from a **URDF exporter** (your CAD tool): one `.urdf` file and a set
+of `.stl` meshes.
+
+1. Put your mesh files in `my_robot/meshes/`.
+2. Save your URDF as `my_robot/robot.urdf`.
+
+### 2. Re-path the meshes
+
+In `my_robot/robot.urdf`, every mesh path **must** look like this:
+
+```xml
+<mesh filename="package://my_robot/meshes/YOUR_FILE.stl"/>
+```
+
+### 3. Run the check
+
+`python check_robot.py` must print `[ok] ready for Lab 2`, then your robot opens in Swift with joint sliders.
+If it prints `[FAIL]`, fix what it says and run it again. It checks that:
+
+- the URDF is plain ASCII (a Thai comment breaks loading on Windows)
+- the robot has exactly **3 movable joints**, and the joint to the end-effector is `type="fixed"`
+- every joint axis is straight, only `0` and `±1` (e.g. `xyz="0 0 1"`)
+- every mesh file is found
+- the tip can move in x, y and z
+
+### 4. Open it in the notebook (section 6)
+
+Section **6 - Your own robot** of `practice.ipynb` checks that your robot shows up in Swift inside the notebook,
+the same way as the Lab 2 Setup cell. Sections 1–5 always use the toy arm, not your robot.
+
+1. Finish steps 1–3 above first: `check_robot.py` must print `[ok] ready for Lab 2`.
+2. Run cell **0 - Setup** of `practice.ipynb`. It imports the libraries. You do not have to finish sections 1–5.
+3. Run the first cell of section 6. It prints your robot's name, its number of joints (must be 3) and its joint limits.
+   It also opens a **second Swift view** under the cell, and your robot should appear there with all its meshes.
+4. In the next cell:
+   - set `q_try` to one value per joint, inside the joint limits (rad for a revolute joint, m for a prismatic joint)
+   - write the line that moves your robot to `q_try` (see the Syntax cell). Use **`my_robot`** and **`env2`**,
+     not `robot` and `env`, which are the toy arm.
+5. Run the cell. Your robot should move in the second Swift view. Compare the printed tip position with your
+   MDH model from LAB1 at the same `q_try`.
+
 ## Files
 
 - **`practice.ipynb`** — RTB practice notebook, inverse kinematics basics, shown in Swift.
-- **`toy_robot/`** — toy 2-link arm (URDF + STL meshes), loaded the same way as your robot in Lab 2.
+- **`check_robot.py`** — `python check_robot.py`, no args. Checks your URDF for Lab 2, then opens it in Swift with joint sliders.
+- **`toy_robot/`** — toy 2-link arm (URDF + STL meshes) used by sections 1–5 of `practice.ipynb`.
+- **`my_robot/`** — put your own robot here. Used by `check_robot.py` and section 6 of `practice.ipynb`.
 - **`fix_swift.py`**, **`requirements.txt`** — same install as Lab 2.
 
 ## Troubleshooting
@@ -66,6 +115,9 @@ T = [   0.0000   -1.0000    0.0000    0.0500 ]
 | Arm **does not show** / *"a client-side exception has occurred"* (Windows) | `python fix_swift.py`, then restart the kernel |
 | `fix_swift.py` prints `target line not found` | see **Manual fix** below |
 | `FileNotFoundError: toy_robot/robot.urdf` | open this project folder as the VS Code workspace |
+| Section 6 prints `put your LAB1 robot in my_robot/ first` | save your URDF as `my_robot/robot.urdf` (Robot Setup, step 1) |
+| Your robot **does not show** in section 6, or shows without meshes | run `python check_robot.py` and fix every `[FAIL]`, then restart the kernel |
+| `ValueError: incorrect vector length` in section 6 | `q_try` needs one value per joint, and move `my_robot`, not `robot` (the toy arm has 2 joints) |
 
 ### Manual fix
 
