@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Toy 3-DOF RRR arm for the Lab 2 warm-up. Primitive shapes only, no mesh files.
-     d1 = 0.10 m (base to shoulder), L2 = 0.15 m (upper arm), L3 = 0.20 m (forearm to tip) -->
-<robot name="toy_rrr">
+<!-- Toy 2-link planar arm for the Lab 2 warm-up: link 1 = 0.15 m, link 2 = 0.20 m, arm plane 0.05 m above the floor -->
+<robot name="toy_2link">
 
   <link name="base_link">
     <visual>
-      <origin xyz="0 0 0.04" rpy="0 0 0"/>
-      <geometry><cylinder radius="0.05" length="0.08"/></geometry>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="package://toy_robot/meshes/base.stl"/></geometry>
       <material name="grey"><color rgba="0.55 0.55 0.6 1"/></material>
     </visual>
   </link>
 
   <joint name="joint1" type="revolute">
-    <origin xyz="0 0 0.10" rpy="0 0 0"/>
+    <origin xyz="0 0 0.05" rpy="0 0 0"/>
     <parent link="base_link"/>
     <child link="link1"/>
     <axis xyz="0 0 1"/>
@@ -21,14 +20,14 @@
 
   <link name="link1">
     <visual>
-      <origin xyz="0 0 -0.01" rpy="0 0 0"/>
-      <geometry><cylinder radius="0.035" length="0.04"/></geometry>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="package://toy_robot/meshes/link1.stl"/></geometry>
       <material name="blue"><color rgba="0.23 0.38 0.71 1"/></material>
     </visual>
   </link>
 
   <joint name="joint2" type="revolute">
-    <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+    <origin xyz="0.15 0 0" rpy="0 0 0"/>
     <parent link="link1"/>
     <child link="link2"/>
     <axis xyz="0 0 1"/>
@@ -37,38 +36,22 @@
 
   <link name="link2">
     <visual>
-      <origin xyz="0.075 0 0" rpy="0 1.5708 0"/>
-      <geometry><cylinder radius="0.018" length="0.15"/></geometry>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="package://toy_robot/meshes/link2.stl"/></geometry>
       <material name="orange"><color rgba="0.95 0.55 0.15 1"/></material>
-    </visual>
-  </link>
-
-  <joint name="joint3" type="revolute">
-    <origin xyz="0.15 0 0" rpy="0 0 0"/>
-    <parent link="link2"/>
-    <child link="link3"/>
-    <axis xyz="0 0 1"/>
-    <limit lower="-3.1416" upper="3.1416" effort="10" velocity="3.14"/>
-  </joint>
-
-  <link name="link3">
-    <visual>
-      <origin xyz="0.10 0 0" rpy="0 1.5708 0"/>
-      <geometry><cylinder radius="0.014" length="0.20"/></geometry>
-      <material name="green"><color rgba="0.25 0.7 0.4 1"/></material>
     </visual>
   </link>
 
   <joint name="tool" type="fixed">
     <origin xyz="0.20 0 0" rpy="0 0 0"/>
-    <parent link="link3"/>
+    <parent link="link2"/>
     <child link="end_effector"/>
   </joint>
 
   <link name="end_effector">
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
-      <geometry><sphere radius="0.012"/></geometry>
+      <geometry><mesh filename="package://toy_robot/meshes/tip.stl"/></geometry>
       <material name="dark"><color rgba="0.15 0.15 0.15 1"/></material>
     </visual>
   </link>
