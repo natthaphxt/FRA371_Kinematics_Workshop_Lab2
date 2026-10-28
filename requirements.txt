@@ -1,0 +1,6 @@
+roboticstoolbox-python
+spatialgeometry
+spatialmath-python
+swift-sim
+websockets==12.0
+ipykernel
